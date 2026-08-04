@@ -293,3 +293,37 @@ button:hover{
     transform:translateY(-3px) scale(1.03);
     box-shadow:0 0 35px rgba(221,42,123,.8);
 }
+.planet{
+    position:fixed;
+    width:220px;
+    height:220px;
+    right:30px;
+    bottom:30px;
+    border-radius:50%;
+    background-image:url("earth.png");
+    background-size:cover;
+    background-position:center;
+    box-shadow:
+    0 0 30px #00e5ff,
+    0 0 80px #0066ff;
+    animation:rotatePlanet 20s linear infinite, floatPlanet 6s ease-in-out infinite;
+    z-index:-1;
+}
+
+@keyframes rotatePlanet{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes floatPlanet{
+    0%,100%{
+        margin-bottom:0;
+    }
+    50%{
+        margin-bottom:40px;
+    }
+}
