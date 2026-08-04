@@ -91,60 +91,22 @@ document.querySelectorAll(".about").forEach(el => observer.observe(el));
 // ===== Smooth Scroll =====
 document.documentElement.style.scrollBehavior = "smooth";
 });
-// ===== Visitors Counter =====
-
-let count = 0;
-let target = 4477;
-
-let visitors = document.getElementById("visitors");
-
-let counter = setInterval(() => {
-
-    count += 50;
-
-    if(count >= target){
-        count = target;
-        clearInterval(counter);
-    }
-
-    visitors.innerHTML = count;
-
-}, 20);
-// ===== Live Style Visitors Counter =====
-
-window.addEventListener("load", () => {
-
-    let count = 4477;
-    let visitors = document.getElementById("visitors");
-
-    if (visitors) {
-
-        visitors.innerHTML = count;
-
-        setInterval(() => {
-            count++;
-            visitors.innerHTML = count;
-        }, 5000);
-
-    }
-
-});
-// ===== Tap Infinite Counter =====
+// ===== Tap Infinite Visitors =====
 
 let tapCount = 0;
 
-const counter = document.getElementById("visitors");
+const visitors = document.getElementById("visitors");
 
-if(counter){
+if(visitors){
 
-    counter.innerHTML = tapCount;
+    visitors.innerHTML = tapCount;
 
-    counter.addEventListener("click",()=>{
+    visitors.onclick = function(){
 
         tapCount++;
 
-        counter.innerHTML = tapCount;
+        visitors.innerHTML = tapCount;
 
-    });
+    };
 
 }
