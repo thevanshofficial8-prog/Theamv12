@@ -369,33 +369,24 @@ button:hover{
     height:100%;
     pointer-events:none;
     overflow:hidden;
-    z-index:1;
+    z-index:5;
 }
 
-.rain::before{
-    content:"";
+.rain span{
     position:absolute;
     width:2px;
-    height:120px;
+    height:80px;
     background:linear-gradient(transparent,#00e5ff);
-    animation:rain 0.8s linear infinite;
-    box-shadow:
-    100px 200px #00e5ff,
-    250px 500px #00e5ff,
-    400px 100px #00e5ff,
-    600px 700px #00e5ff,
-    800px 300px #00e5ff,
-    1000px 600px #00e5ff;
+    animation:rainFall 1s linear infinite;
 }
 
-@keyframes rain{
-
+@keyframes rainFall{
     from{
-        transform:translateY(-200px);
+        transform:translateY(-100px);
+        opacity:1;
     }
-
     to{
         transform:translateY(100vh);
+        opacity:0;
     }
-
 }
