@@ -1180,3 +1180,19 @@ button:hover{
         visibility:hidden;
     }
 }
+.about-media{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+
+.about-photo,
+.about-video{
+    width:180px;
+    height:180px;
+    object-fit:cover;
+    border-radius:20px;
+    border:2px solid #00e5ff;
+    box-shadow:0 0 15px #00e5ff;
+}
