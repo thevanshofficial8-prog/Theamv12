@@ -112,20 +112,20 @@ let counter = setInterval(() => {
 }, 20);
 // ===== Live Style Visitors Counter =====
 
-let count = 4477;
+window.addEventListener("load", () => {
 
-let visitors = document.getElementById("visitors");
+    let count = 4477;
+    let visitors = document.getElementById("visitors");
 
-if(visitors){
-
-    visitors.innerHTML = count;
-
-    setInterval(() => {
-
-        count += 1;
+    if (visitors) {
 
         visitors.innerHTML = count;
 
-    }, 5000);
+        setInterval(() => {
+            count++;
+            visitors.innerHTML = count;
+        }, 5000);
 
-}
+    }
+
+});
