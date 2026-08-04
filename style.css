@@ -159,3 +159,45 @@ button:hover{
     color:#fff;
     font-size:13px;
 }
+.shooting-stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.shooting-stars::before,
+.shooting-stars::after{
+    content:"";
+    position:absolute;
+    width:2px;
+    height:120px;
+    background:linear-gradient(white,transparent);
+    transform:rotate(-45deg);
+    animation:meteor 4s linear infinite;
+}
+
+.shooting-stars::before{
+    top:10%;
+    left:20%;
+}
+
+.shooting-stars::after{
+    top:35%;
+    left:70%;
+    animation-delay:2s;
+}
+
+@keyframes meteor{
+    0%{
+        transform:translate(0,0) rotate(-45deg);
+        opacity:0;
+    }
+    10%{
+        opacity:1;
+    }
+    100%{
+        transform:translate(600px,600px) rotate(-45deg);
+        opacity:0;
+    }
+}
