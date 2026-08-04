@@ -50,15 +50,23 @@ border:1px solid rgba(255,255,255,.15);
 box-shadow:0 0 40px rgba(0,0,0,.5);
 }
 
-.profile{
-width:130px;
-height:130px;
-border-radius:50%;
-object-fit:cover;
-border:4px solid white;
-margin-bottom:20px;
-}
 
+.profile{
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #ffffff;
+    margin-bottom:20px;
+
+    box-shadow:
+        0 0 15px #00e5ff,
+        0 0 30px #00e5ff,
+        0 0 50px #00e5ff,
+        0 0 70px #6a11cb;
+
+    animation: glowProfile 2s ease-in-out infinite alternate;
+}
 h1{
     color:#fff;
     font-size:56px;
