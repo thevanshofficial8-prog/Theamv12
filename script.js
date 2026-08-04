@@ -16,3 +16,21 @@ playBtn.addEventListener("click", () => {
 });
 
 music.loop = true;
+function updateDateTime(){
+    const now = new Date();
+
+    const date = now.toLocaleDateString("en-IN", {
+        weekday:"long",
+        day:"2-digit",
+        month:"long",
+        year:"numeric"
+    });
+
+    const time = now.toLocaleTimeString("en-IN");
+
+    document.getElementById("datetime").innerHTML =
+        `${date}<br>${time}`;
+}
+
+updateDateTime();
+setInterval(updateDateTime, 1000);
