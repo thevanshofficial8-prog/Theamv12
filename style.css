@@ -355,13 +355,3 @@ button:hover{
         margin-bottom:40px;
     }
 }
-.about{
-    opacity:0;
-    transform:translateY(80px);
-    transition:1s;
-}
-
-.about.show{
-    opacity:1;
-    transform:translateY(0);
-}
