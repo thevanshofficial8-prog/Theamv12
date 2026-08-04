@@ -129,3 +129,22 @@ window.addEventListener("load", () => {
     }
 
 });
+// ===== Tap Infinite Counter =====
+
+let tapCount = 0;
+
+const counter = document.getElementById("visitors");
+
+if(counter){
+
+    counter.innerHTML = tapCount;
+
+    counter.addEventListener("click",()=>{
+
+        tapCount++;
+
+        counter.innerHTML = tapCount;
+
+    });
+
+}
