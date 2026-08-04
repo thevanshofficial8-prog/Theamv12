@@ -34,3 +34,18 @@ function updateDateTime(){
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
+function createStar() {
+    const star = document.createElement("div");
+    star.classList.add("shooting-star");
+
+    star.style.left = Math.random() * window.innerWidth + "px";
+    star.style.top = Math.random() * (window.innerHeight / 2) + "px";
+
+    document.body.appendChild(star);
+
+    setTimeout(() => {
+        star.remove();
+    }, 2500);
+}
+
+setInterval(createStar, 800);
