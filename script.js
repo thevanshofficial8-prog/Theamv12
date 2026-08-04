@@ -110,3 +110,22 @@ let counter = setInterval(() => {
     visitors.innerHTML = count;
 
 }, 20);
+// ===== Live Style Visitors Counter =====
+
+let count = 4477;
+
+let visitors = document.getElementById("visitors");
+
+if(visitors){
+
+    visitors.innerHTML = count;
+
+    setInterval(() => {
+
+        count += 1;
+
+        visitors.innerHTML = count;
+
+    }, 5000);
+
+}
