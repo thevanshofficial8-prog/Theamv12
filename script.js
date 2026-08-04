@@ -91,41 +91,25 @@ document.querySelectorAll(".about").forEach(el => observer.observe(el));
 // ===== Smooth Scroll =====
 document.documentElement.style.scrollBehavior = "smooth";
 });
-// ===== Tap Infinite Visitors =====
 
-let tapCount = 0;
+// ===== Auto Views Counter =====
+
+let views = 4477;
 
 const visitors = document.getElementById("visitors");
 
 if(visitors){
 
-    visitors.innerHTML = tapCount;
+    visitors.innerHTML = views;
 
-    visitors.onclick = function(){
+    setInterval(() => {
 
-        tapCount++;
+        views++;
 
-        visitors.innerHTML = tapCount;
+        visitors.innerHTML = views;
 
-    };
+    },1000);
 
 }
-// ===== Tap Infinite Views =====
-
-let tapCount = 4477;
-
-const visitors = document.getElementById("visitors");
-
-if(visitors){
-
-    visitors.innerHTML = tapCount;
-
-    visitors.onclick = function(){
-
-        tapCount++;
-
-        visitors.innerHTML = tapCount;
-
-    };
 
 }
