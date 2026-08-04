@@ -62,3 +62,15 @@ music.addEventListener("pause", () => {
         bar.style.animationPlayState = "paused";
     });
 });
+const text = "Welcome To TheamV12";
+let index = 0;
+
+function typing(){
+    if(index < text.length){
+        document.getElementById("typing").innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typing,100);
+    }
+}
+
+typing();
