@@ -550,3 +550,21 @@ button:hover{
         transform:translateY(0);
     }
 }
+.telegram-btn{
+    display:inline-flex;
+    align-items:center;
+    margin-left:10px;
+    padding:12px 20px;
+    border-radius:25px;
+    background:rgba(0,229,255,.15);
+    border:1px solid #00e5ff;
+    color:white;
+    text-decoration:none;
+    box-shadow:0 0 15px #00e5ff;
+    transition:.3s;
+}
+
+.telegram-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px #00e5ff;
+}
