@@ -49,3 +49,16 @@ function createStar() {
 }
 
 setInterval(createStar, 800);
+const bars = document.querySelectorAll(".visualizer span");
+
+music.addEventListener("play", () => {
+    bars.forEach(bar => {
+        bar.style.animationPlayState = "running";
+    });
+});
+
+music.addEventListener("pause", () => {
+    bars.forEach(bar => {
+        bar.style.animationPlayState = "paused";
+    });
+});
