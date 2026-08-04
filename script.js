@@ -74,3 +74,30 @@ function typing(){
 }
 
 typing();
+// ===== Typing Animation =====
+const text = "Welcome To TheamV12";
+let index = 0;
+const typing = document.getElementById("typing");
+
+function typeText() {
+    if (typing && index < text.length) {
+        typing.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeText, 90);
+    }
+}
+typeText();
+
+// ===== About Section Fade Animation =====
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+        }
+    });
+});
+
+document.querySelectorAll(".about").forEach(el => observer.observe(el));
+
+// ===== Smooth Scroll =====
+document.documentElement.style.scrollBehavior = "smooth";
