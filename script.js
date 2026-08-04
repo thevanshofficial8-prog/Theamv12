@@ -91,3 +91,22 @@ document.querySelectorAll(".about").forEach(el => observer.observe(el));
 // ===== Smooth Scroll =====
 document.documentElement.style.scrollBehavior = "smooth";
 });
+// ===== Visitors Counter =====
+
+let count = 0;
+let target = 4477;
+
+let visitors = document.getElementById("visitors");
+
+let counter = setInterval(() => {
+
+    count += 50;
+
+    if(count >= target){
+        count = target;
+        clearInterval(counter);
+    }
+
+    visitors.innerHTML = count;
+
+}, 20);
