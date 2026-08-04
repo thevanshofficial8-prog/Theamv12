@@ -110,3 +110,22 @@ if(visitors){
     };
 
 }
+// ===== Tap Infinite Views =====
+
+let tapCount = 4477;
+
+const visitors = document.getElementById("visitors");
+
+if(visitors){
+
+    visitors.innerHTML = tapCount;
+
+    visitors.onclick = function(){
+
+        tapCount++;
+
+        visitors.innerHTML = tapCount;
+
+    };
+
+}
