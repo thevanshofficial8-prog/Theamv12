@@ -505,7 +505,18 @@ button:hover{
     transform:translateX(-50%);
     box-shadow:0 0 15px #c9a227;
 }
+/* ===== Tap Visitor Counter ===== */
 
+.tap-counter{
+    cursor:pointer;
+    transition:.3s;
+    text-shadow:0 0 15px #00e5ff;
+}
+
+.tap-counter:active{
+    transform:scale(1.3);
+    color:#fff;
+}
 @keyframes rotateMala{
     from{
         transform:rotate(0deg);
