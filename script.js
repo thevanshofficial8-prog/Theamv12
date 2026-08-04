@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 const music = document.getElementById("music");
 const playBtn = document.getElementById("playBtn");
 
@@ -89,3 +90,4 @@ document.querySelectorAll(".about").forEach(el => observer.observe(el));
 
 // ===== Smooth Scroll =====
 document.documentElement.style.scrollBehavior = "smooth";
+});
