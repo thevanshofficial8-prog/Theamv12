@@ -201,3 +201,24 @@ button:hover{
         opacity:0;
     }
 }
+.shooting-star{
+    position:fixed;
+    width:3px;
+    height:140px;
+    background:linear-gradient(white,transparent);
+    transform:rotate(-45deg);
+    pointer-events:none;
+    z-index:0;
+    animation:meteor 2.5s linear forwards;
+}
+
+@keyframes meteor{
+    from{
+        opacity:1;
+        transform:translate(0,0) rotate(-45deg);
+    }
+    to{
+        opacity:0;
+        transform:translate(800px,800px) rotate(-45deg);
+    }
+}
