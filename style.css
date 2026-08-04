@@ -390,3 +390,41 @@ button:hover{
         opacity:0;
     }
 }
+/* ===== Peace Zone ===== */
+
+.peace-zone{
+    width:340px;
+    margin:50px auto;
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.2);
+    color:white;
+    box-shadow:0 0 30px rgba(0,229,255,0.3);
+    animation:peaceGlow 4s ease-in-out infinite;
+}
+
+.peace-zone h2{
+    color:#00e5ff;
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+.peace-zone p{
+    color:#ddd;
+    line-height:1.7;
+}
+
+@keyframes peaceGlow{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-10px);
+    }
+
+}
