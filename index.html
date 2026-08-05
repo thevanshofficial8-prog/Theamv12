@@ -309,7 +309,23 @@
         }, 1800);
 
         // 3. Playlist / Multi-Track Switcher Logic
+        const playlist = [         // 3. Updated Playlist with Stable Audio Streams
         const playlist = [
+            { name: "Piano Peace", url: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
+            { name: "Peaceful Rain", url: "https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg" },
+            { name: "Deep Meditation", url: "https://actions.google.com/sounds/v1/ambiences/night_forest.ogg" }
+        ];
+        let currentTrackIndex = 0;
+
+        function changeTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.src = playlist[currentTrackIndex].url;
+            document.getElementById('currentTrackName').innerText = playlist[currentTrackIndex].name;
+            bgMusic.play().catch(e => console.log('Audio playback error:', e));
+            showToast(`Playing: ${playlist[currentTrackIndex].name} 🎵`);
+        }
+
             { name: "Piano Peace", url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=meditation-piano-112278.mp3" },
             { name: "Peaceful Rain", url: "https://cdn.pixabay.com/download/audio/2021/09/06/audio_8b2111894b.mp3?filename=soft-rain-ambient-111154.mp3" },
             { name: "Deep Meditation", url: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c886a117.mp3?filename=meditation-ambient-14092.mp3" }
