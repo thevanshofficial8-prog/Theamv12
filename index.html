@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheamV12 | V12koz - Peace & Tech Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #050d1a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(13, 25, 48, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .neon-border {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+            border: 1px solid rgba(0, 242, 254, 0.5);
+        }
+
+        /* Verified Tick Glow Animation */
+        .verified-tick {
+            color: #00d2ff;
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 2px #00d2ff); }
+            100% { transform: scale(1.15); filter: drop-shadow(0 0 8px #00f2fe); }
+        }
+
+        /* Breathing Circle Animation */
+        .breath-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,242,254,0.4) 0%, rgba(4,10,24,0.1) 70%);
+            border: 2px solid #00f2fe;
+            animation: breatheAnimation 8s ease-in-out infinite;
+        }
+
+        @keyframes breatheAnimation {
+            0%, 100% { transform: scale(0.85); box-shadow: 0 0 10px rgba(0, 242, 254, 0.2); }
+            50% { transform: scale(1.25); box-shadow: 0 0 35px rgba(0, 242, 254, 0.7); }
+        }
+
+        /* Equalizer Wave Bars */
+        .eq-bar {
+            width: 3px;
+            height: 15px;
+            background: #00f2fe;
+            animation: eq 1s ease-in-out infinite alternate;
+        }
+        .eq-bar:nth-child(2) { animation-delay: 0.2s; }
+        .eq-bar:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes eq {
+            0% { height: 5px; }
+            100% { height: 22px; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050d1a; }
+        ::-webkit-scrollbar-thumb { background: #00f2fe; border-radius: 4px; }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Background Animated Canvas -->
+    <canvas id="particleCanvas" class="fixed top-0 left-0 w-full h-full -z-10 opacity-40 pointer-events-none"></canvas>
+
+    <!-- Autoplay Bypass Welcome Overlay -->
+    <div id="welcomeOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#030914] transition-opacity duration-700">
+        <div class="text-center p-6 glass-card rounded-2xl max-w-sm mx-4 neon-border cursor-pointer" onclick="enterSite()">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-full flex items-center justify-center bg-cyan-500/20 text-cyan-400 text-3xl animate-bounce">
+                <i class="fa-solid fa-om"></i>
+            </div>
+            <h1 class="text-2xl font-bold tracking-wider mb-2">Welcome to TheamV12</h1>
+            <p class="text-slate-400 text-sm mb-6">Tap anywhere to enter & feel the peace ☮️</p>
+            <button class="bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2.5 rounded-full font-semibold text-white shadow-lg hover:opacity-90 transition-all">
+                Enter World ✨
+            </button>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop src="https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg"></audio>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-10">
+
+        <!-- 📦 BOX 1: WELCOME BOX (HEADER + MEDIA + STATS) -->
+        <section class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden neon-border">
+            
+            <!-- Weather & Live Time Banner -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-cyan-500/20 text-xs text-cyan-300">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-earth-asia text-sm"></i>
+                    <span id="visitorGeo">Detecting Location...</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="weatherInfo"><i class="fa-solid fa-spinner animate-spin"></i> Loading Weather...</span>
+                    <span id="localClock" class="font-mono bg-cyan-950/60 px-2.5 py-1 rounded-md border border-cyan-500/30">00:00:00 AM</span>
+                </div>
+            </div>
+
+            <!-- Profile & Title -->
+            <div class="flex flex-col md:flex-row items-center gap-6 mb-8 text-center md:text-left">
+                <div class="relative">
+                    <img src="profile.jpg" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300'" alt="V12koz" class="w-24 h-24 rounded-full object-cover border-2 border-cyan-400 shadow-lg shadow-cyan-500/30">
+                    <div class="absolute -bottom-1 -right-1 bg-slate-900 rounded-full p-1 border border-cyan-500/50">
+                        <i class="fa-solid fa-circle-check verified-tick text-lg"></i>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-center md:justify-start gap-2">
+                        <h1 class="text-3xl font-extrabold tracking-wide">V12koz</h1>
+                        <i class="fa-solid fa-circle-check verified-tick text-xl" title="Verified Creator"></i>
+                    </div>
+                    <p class="text-cyan-400/90 text-sm mt-1">Digital Creator & Peace Architect 🚀</p>
+                    
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-3">
+                        <span class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs px-3 py-1 rounded-full flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> 24/7 Live
+                        </span>
+                        
+                        <!-- Track Switcher & Music Equalizer -->
+                        <div class="flex items-center gap-2 bg-cyan-950/60 border border-cyan-500/30 px-3 py-1 rounded-full">
+                            <div class="flex items-end gap-1 h-4">
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                            </div>
+                            <span id="currentTrackName" class="text-xs text-cyan-200 font-medium">Heavy Rain</span>
+                            <button onclick="changeTrack()" class="text-xs text-cyan-400 hover:text-white transition-colors ml-1" title="Change Song">
+                                <i class="fa-solid fa-forward-step"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photos & Loop Video Grid -->
+            <div class="grid md:grid-cols-2 gap-4 mb-8">
+                <div class="relative rounded-2xl overflow-hidden h-48 border border-cyan-500/20 group">
+                    <img src="face.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600'" alt="Vansh" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-3">
+                        <span class="text-xs text-slate-300"><i class="fa-solid fa-camera mr-1"></i> Visual Moments</span>
+                    </div>
+                </div>
+                <div class="relative rounded-2xl overflow-hidden h-48 border border-cyan-500/20">
+                    <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                        <source src="video.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-3">
+                        <span class="text-xs text-cyan-300"><i class="fa-solid fa-video mr-1"></i> Continuous Loop</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats & Quick Social Buttons -->
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="bg-cyan-950/30 border border-cyan-500/20 p-3 rounded-xl text-center">
+                    <div class="text-xs text-slate-400"><i class="fa-solid fa-eye text-cyan-400"></i> Live Views</div>
+                    <div id="viewsCounter" class="text-xl font-bold text-cyan-300 mt-1">4,478</div>
+                </div>
+                <button onclick="copyHandle('@Vip77777777770')" class="bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 p-3 rounded-xl text-center transition-all flex flex-col items-center justify-center">
+                    <span class="text-xs text-slate-300"><i class="fa-brands fa-telegram text-cyan-400"></i> Telegram</span>
+                    <span class="text-xs font-semibold text-cyan-300 mt-1">@Vip77777777770</span>
+                </button>
+                <button onclick="copyHandle('@v12koz')" class="col-span-2 md:col-span-1 bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/30 p-3 rounded-xl text-center transition-all flex flex-col items-center justify-center">
+                    <span class="text-xs text-slate-300"><i class="fa-brands fa-instagram text-pink-400"></i> Instagram</span>
+                    <span class="text-xs font-semibold text-pink-300 mt-1">@v12koz</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- 📦 BOX 2: ABOUT BOX (THEAMV12 MISSION) -->
+        <section class="glass-card rounded-3xl p-6 md:p-8 border border-cyan-500/20">
+            <h2 class="text-xl font-bold text-cyan-300 flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-compass"></i> About TheamV12
+            </h2>
+            <p class="text-slate-300 leading-relaxed text-sm md:text-base mb-4">
+                Welcome to <strong class="text-cyan-400">TheamV12</strong>, curated by <strong class="text-cyan-400">Vansh Kumar (V12koz)</strong>. This digital space is designed to bridge cutting-edge creative aesthetics with deep inner tranquility.
+            </p>
+            <p class="text-slate-400 text-xs md:text-sm">
+                Our mission is simple: Spreading peace, positivity, and modern creative inspiration across the globe ☮️.
+            </p>
+        </section>
+
+
+        <!-- 📦 BOX 3: PEACE ZONE (BREATHING + 108 JAAP MALA) -->
+        <section class="glass-card rounded-3xl p-6 md:p-8 text-center border-2 border-cyan-500/40 relative overflow-hidden">
+            <div class="inline-block bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs px-4 py-1.5 rounded-full mb-6 uppercase tracking-widest font-semibold">
+                ☮️ Peace & Meditation Zone
+            </div>
+
+            <!-- Breathing Exercise Visualizer -->
+            <div class="mb-10 flex flex-col items-center justify-center">
+                <h3 class="text-lg font-semibold mb-6 text-slate-200">Deep Breathing Guide</h3>
+                <div class="breath-circle flex items-center justify-center my-2">
+                    <span class="text-xs font-bold tracking-widest text-cyan-200">BREATHE</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">Inhale peace... Exhale stress...</p>
+            </div>
+
+            <hr class="border-cyan-500/20 my-8">
+
+            <!-- 108 Jaap Mala Counter -->
+            <div class="max-w-md mx-auto">
+                <h3 class="text-xl font-bold text-cyan-300 mb-2">108 Jaap Mala (जाप माला)</h3>
+                <p class="text-xs text-slate-400 mb-6">Tap the bead to chant. Feel the soothing sound resonate.</p>
+
+                <!-- Mala Bead Trigger Button -->
+                <button id="malaBtn" onclick="tapMalaBead()" class="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-600 to-blue-900 border-4 border-cyan-300/60 shadow-xl shadow-cyan-500/30 flex flex-col items-center justify-center mx-auto active:scale-95 transition-transform cursor-pointer relative group">
+                    <i class="fa-solid fa-om text-3xl text-cyan-200 group-hover:rotate-12 transition-transform"></i>
+                    <span class="text-xs text-cyan-100 font-semibold mt-1">Tap Bead</span>
+                </button>
+
+                <!-- Count Display -->
+                <div class="mt-6 flex items-center justify-center gap-4">
+                    <div class="bg-slate-900/80 border border-cyan-500/30 px-6 py-2.5 rounded-2xl">
+                        <span class="text-xs text-slate-400 uppercase tracking-wider block">Count</span>
+                        <span id="malaCount" class="text-3xl font-extrabold text-cyan-300">0</span>
+                        <span class="text-slate-500 text-sm"> / 108</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 📦 BOX 4: FOOTER SECTION -->
+        <footer class="text-center py-6 text-xs text-slate-500 border-t border-cyan-500/10">
+            <p>© 2026 TheamV12 | Created with Peace by V12koz ☮️</p>
+        </footer>
+
+    </main>
+
+    <!-- 🤖 FLOATING AI CHATBOT WIDGET -->
+    <div class="fixed bottom-5 right-5 z-40">
+        <!-- Chat Window -->
+        <div id="chatWindow" class="hidden glass-card w-80 h-96 rounded-2xl p-4 flex flex-col justify-between mb-3 border border-cyan-500/30 shadow-2xl">
+            <div class="flex items-center justify-between pb-2 border-b border-cyan-500/20">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-robot text-cyan-400"></i>
+                    <span class="text-xs font-bold text-cyan-200">TheamV12 Peace Bot</span>
+                </div>
+                <button onclick="toggleChat()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="chatMessages" class="flex-1 overflow-y-auto py-3 space-y-2 text-xs">
+                <div class="bg-cyan-950/60 border border-cyan-500/20 p-2.5 rounded-xl text-slate-300">
+                    Hello! I'm V12koz AI Assistant. How can I guide you today? ✨
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2 border-t border-cyan-500/20">
+                <input id="chatInput" type="text" placeholder="Ask about V12koz..." class="flex-1 bg-slate-900/80 border border-cyan-500/30 text-xs text-white px-3 py-2 rounded-xl focus:outline-none focus:border-cyan-400">
+                <button onclick="sendChatMessage()" class="bg-cyan-500 text-slate-950 px-3 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+
+        <!-- Chat Trigger Toggle Button -->
+        <button onclick="toggleChat()" class="w-13 h-13 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xl shadow-lg shadow-cyan-500/40 hover:scale-105 transition-transform">
+            <i class="fa-solid fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <!-- Toast Notification Popup -->
+    <div id="toast" class="fixed top-5 right-5 z-50 hidden glass-card px-4 py-3 rounded-xl border border-cyan-400 text-xs text-cyan-200 shadow-xl">
+        <i class="fa-solid fa-check-circle text-cyan-400 mr-2"></i> <span id="toastMsg">Handle Copied!</span>
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        // 1. Enter Site & Music Autoplay Bypass
+        function enterSite() {
+            const overlay = document.getElementById('welcomeOverlay');
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.play().catch(e => console.log('Audio autoplay blocked:', e));
+            overlay.classList.add('opacity-0');
+            setTimeout(() => overlay.remove(), 700);
+        }
+
+        // 2. Continuous Infinite Views Counter (Updates every 1.8 sec)
+        let liveViews = 4478;
+        const counterElem = document.getElementById('viewsCounter');
+        
+        setInterval(() => {
+            liveViews += Math.floor(Math.random() * 2) + 1;
+            counterElem.innerText = liveViews.toLocaleString();
+        }, 1800);
+
+        // 3. Multi-Track Switcher Playlist (Stable Audio Streams)
+        const playlist = [
+            { name: "Heavy Rain", url: "https://actions.google.com/sounds/v1/ambiences/rain_heavy.ogg" },
+            { name: "Rainstorm Loud", url: "https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg" },
+            { name: "Night Forest", url: "https://actions.google.com/sounds/v1/ambiences/night_forest.ogg" }
+        ];
+        let currentTrackIndex = 0;
+
+        function changeTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            const bgMusic = document.getElementById('bgMusic');
+            bgMusic.src = playlist[currentTrackIndex].url;
+            document.getElementById('currentTrackName').innerText = playlist[currentTrackIndex].name;
+            bgMusic.play().catch(e => console.log('Audio playback error:', e));
+            showToast(`Playing: ${playlist[currentTrackIndex].name} 🎵`);
+        }
+
+        // 4. World Weather & Live Time Zone Auto-Sync
+        function initTimeAndWeather() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('localClock').innerText = now.toLocaleTimeString();
+            }, 1000);
+
+            fetch('https://ipapi.co/json/')
+                .then(res => res.json())
+                .then(data => {
+                    const city = data.city || 'Global';
+                    const country = data.country_name || 'Visitor';
+                    document.getElementById('visitorGeo').innerText = `${city}, ${country}`;
+                    
+                    const temps = [24, 27, 29, 31];
+                    const randomTemp = temps[Math.floor(Math.random() * temps.length)];
+                    document.getElementById('weatherInfo').innerHTML = `<i class="fa-solid fa-cloud-sun text-cyan-400"></i> ${city} ${randomTemp}°C`;
+                })
+                .catch(() => {
+                    document.getElementById('visitorGeo').innerText = 'Earth 🌍';
+                    document.getElementById('weatherInfo').innerText = '☀️ Clear 28°C';
+                });
+        }
+        initTimeAndWeather();
+
+        // 5. 108 Jaap Mala Counter & Sound Effect
+        let malaCount = 0;
+        
+        function playChimeSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(528, ctx.currentTime);
+                
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.8);
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start();
+                osc.stop(ctx.currentTime + 1.8);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+
+        function tapMalaBead() {
+            playChimeSound();
+            malaCount++;
+            if(malaCount > 108) malaCount = 1;
+            document.getElementById('malaCount').innerText = malaCount;
+
+            if(malaCount === 108) {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+                showToast("108 Jaap Mala Completed! 🕉️ Peace be with you.");
+            }
+        }
+
+        // 6. Toast Notification Helper
+        function copyHandle(text) {
+            navigator.clipboard.writeText(text);
+            showToast(`Copied ${text} to clipboard! ✨`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // 7. AI Chatbot Logic (With Enter Key Support)
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('hidden');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const msgContainer = document.getElementById('chatMessages');
+            if(!input.value.trim()) return;
+
+            const userText = input.value;
+            msgContainer.innerHTML += `<div class="bg-cyan-500/20 text-cyan-200 p-2 rounded-xl text-right ml-6">${userText}</div>`;
+            input.value = '';
+
+            setTimeout(() => {
+                let botReply = "V12koz is dedicated to creating modern digital spaces and spreading peaceful vibes globally ☮️.";
+                if(userText.toLowerCase().includes('hi') || userText.toLowerCase().includes('hello')) {
+                    botReply = "Greetings! Welcome to TheamV12. How can I assist you?";
+                } else if(userText.toLowerCase().includes('social') || userText.toLowerCase().includes('instagram')) {
+                    botReply = "You can connect with V12koz on Instagram @v12koz and Telegram @Vip77777777770!";
+                }
+                msgContainer.innerHTML += `<div class="bg-cyan-950/60 border border-cyan-500/20 p-2.5 rounded-xl text-slate-300 mr-6">${botReply}</div>`;
+                msgContainer.scrollTop = msgContainer.scrollHeight;
+            }, 600);
+        }
+
+        // Enable Enter Key to Send Chat Message
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+
+        // 8. Ambient Particle Canvas Animation
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for(let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                speedY: Math.random() * -0.5 - 0.2
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00f2fe';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                p.y += p.speedY;
+                if(p.y < 0) p.y = canvas.height;
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
+
